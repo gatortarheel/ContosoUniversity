@@ -33,8 +33,8 @@ namespace ContosoUniversity.Models
             get { return LastName + ", " + FirstMidName; }
         }
 
-        //public ICollection<CourseAssignment> CourseAssignments { get; set; }  //many courses
-        //public OfficeAssignment OfficeAssignment { get; set; }              //one office
+        public ICollection<CourseAssignment> CourseAssignments { get; set; }  //many courses
+        public OfficeAssignment OfficeAssignment { get; set; }              //one office
 
     }
 }
