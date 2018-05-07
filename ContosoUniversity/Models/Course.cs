@@ -27,7 +27,7 @@ namespace ContosoUniversity.Models
         public ICollection<Enrollment> Enrollments { get; set; }
         //Enrollments is a navigation property
         //A Course can be related to many Enrollments entities
-        public ICollection<CourseAssigment> CourseAssigments { get; set; }
+        public ICollection<CourseAssignment> CourseAssigments { get; set; }
 
     }
 }
