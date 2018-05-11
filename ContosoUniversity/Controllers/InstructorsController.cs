@@ -25,19 +25,19 @@ namespace ContosoUniversity.Controllers
         {
             var viewModel = new InstructorIndexData();
             viewModel.Instructors = await _context.Instructors
-                .Include(i => i.OfficeAssignment)       //eager loading
-                .Include(i => i.CourseAssignments)      //eager loading
+                  .Include(i => i.OfficeAssignment)
+                  .Include(i => i.CourseAssignments)
                     .ThenInclude(i => i.Course)
                         .ThenInclude(i => i.Enrollments)
                             .ThenInclude(i => i.Student)
-                .Include(i => i.CourseAssignments)
+                  .Include(i => i.CourseAssignments)
                     .ThenInclude(i => i.Course)
                         .ThenInclude(i => i.Department)
-                   .AsNoTracking()
-                   .OrderBy(i => i.LastName)
-                   .ToListAsync();
+                  .AsNoTracking()
+                  .OrderBy(i => i.LastName)
+                  .ToListAsync();
 
-            if(id != null)
+            if (id != null)
             {
                 ViewData["InstructorID"] = id.Value;
                 Instructor instructor = viewModel.Instructors.Where(
@@ -45,16 +45,24 @@ namespace ContosoUniversity.Controllers
                 viewModel.Courses = instructor.CourseAssignments.Select(s => s.Course);
             }
 
-            if(courseID != null)
+            if (courseID != null)
             {
                 ViewData["CourseID"] = courseID.Value;
+                //part that works
                 viewModel.Enrollments = viewModel.Courses.Where(
                     x => x.CourseID == courseID).Single().Enrollments;
+                ////part that does not work
+                //var selectedCourse = viewModel.Courses.Where(x => x.CourseID == courseID).Single();
+                //await _context.Entry(selectedCourse).Collection(x => x.Enrollments).LoadAsync();
+                //foreach (Enrollment enrollment in selectedCourse.Enrollments)
+                //{
+                //    await _context.Entry(enrollment).Reference(x => x.Student).LoadAsync();
+                //}
+                //viewModel.Enrollments = selectedCourse.Enrollments;
             }
 
             return View(viewModel);
         }
-
         // GET: Instructors/Details/5
         public async Task<IActionResult> Details(int? id)
         {
